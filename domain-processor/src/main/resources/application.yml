@@ -1,0 +1,26 @@
+spring.cloud.stream:
+  function:
+    definition: domainProcessor
+  bindings:
+    domainProcessor-in-0:
+      destination: web-domains
+    domainProcessor-out-0:
+      destination: active.web-domains
+  kafka:
+    bindings:
+      domainProcessor-in-0:
+        consumer:
+          properties:
+          spring.json.trusted.packages: "com.crawler.domaincrawler.models"
+          configuration:
+            value:
+              deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      domainProcessor-out-0:
+        producer:
+          configuration:
+            value:
+              serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    binder:
+      brokers:
+        - localhost:9091
+        - localhost:9092
